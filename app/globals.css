@@ -1,1 +1,50 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'Jost';
+  src:
+    url('/fonts/Jost-SemiBold.woff2') format('woff2'),
+    url('/fonts/Jost-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Jost';
+  src:
+    url('/fonts/Jost.woff2') format('woff2'),
+    url('/fonts/Jost.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Jost';
+  src:
+    url('/fonts/Jost-Italic.woff2') format('woff2'),
+    url('/fonts/Jost-Italic.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@layer base {
+  body {
+    @apply bg-bg-primary;
+  }
+}
+
+@theme {
+  --font-body: Jost, 'sans-serif';
+
+  --color-bg-primary: #e5e5ea;
+  --color-bg-chat: #000000;
+  --color-chat-msg: #f2f2f7;
+  --color-user-msg: #3b82f6;
+
+  --color-text-primary: #000000;
+  --color-text-secondary: #1c1c1e;
+  --color-text-dark: #16181c;
+}
