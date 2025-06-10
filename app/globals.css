@@ -37,7 +37,7 @@
 }
 
 @theme {
-  --font-body: Jost, 'sans-serif';
+  --font-body: 'Jost', sans-serif;
 
   --color-bg-primary: #e5e5ea;
   --color-bg-chat: #000000;
@@ -47,4 +47,33 @@
   --color-text-primary: #000000;
   --color-text-secondary: #1c1c1e;
   --color-text-dark: #16181c;
+  --color-text-gray: #666668;
+}
+
+@keyframes wave {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.dot {
+  transition: all 0.3s ease-in-out;
+}
+
+.group:hover .dot {
+  animation: wave 0.5s ease-in-out;
+}
+
+.group:hover .dot:nth-child(1) {
+  animation-delay: 0s;
+}
+.group:hover .dot:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.group:hover .dot:nth-child(3) {
+  animation-delay: 0.2s;
 }
