@@ -39,7 +39,7 @@
 @theme {
   --font-body: 'Jost', sans-serif;
 
-  --color-bg-primary: #e5e5ea;
+  --color-bg-primary: #f2f2f7;
   --color-bg-chat: #000000;
   --color-chat-msg: #f2f2f7;
   --color-user-msg: #3b82f6;
@@ -48,6 +48,9 @@
   --color-text-secondary: #1c1c1e;
   --color-text-dark: #16181c;
   --color-text-gray: #666668;
+  --color-text-grayDark: #2c2c2e;
+
+  --breakpoint-xs: 17rem;
 }
 
 @keyframes wave {
