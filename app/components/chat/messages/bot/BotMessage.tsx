@@ -4,7 +4,7 @@ import BotBubble from '@/app/components/icons/BotBubble';
 
 export default function BotMessage() {
   return (
-    <div className="flex justify-start gap-2">
+    <div className="flex justify-start gap-2 mb-4">
       <div>
         <div className="relative">
           <Image
