@@ -41,6 +41,7 @@
 
   --color-bg-primary: #f2f2f7;
   --color-bg-chat: #000000;
+  --color-bg-user: #007aff;
   --color-chat-msg: #f2f2f7;
   --color-user-msg: #3b82f6;
 
@@ -49,6 +50,7 @@
   --color-text-dark: #16181c;
   --color-text-gray: #666668;
   --color-text-grayDark: #2c2c2e;
+  --color-text-light: #ffffff;
 
   --breakpoint-xs: 17rem;
 }

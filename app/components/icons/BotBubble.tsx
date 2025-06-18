@@ -1,11 +1,11 @@
 export default function BotBubble() {
   return (
-    <div className="absolute left-[-8px] top-0 h-[15px] w-[9px] text-[#F2F2F7]">
+    <div className="absolute left-[-8px] top-0 h-[15px] w-[9px]">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="15"
+        width="18"
         height="12"
-        viewBox="0 0 15 12"
+        viewBox="0 0 18 12"
         fill="none"
       >
         <path
