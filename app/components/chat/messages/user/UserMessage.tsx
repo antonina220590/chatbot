@@ -24,7 +24,7 @@ export default function UserMessage() {
         <button
           className="
             text-gray-400 text-xs transition-colors
-            hover:bg-bg-user
+            hover:text-bg-user
             [&_.anticon_svg]:fill-current
             cursor-pointer
           "
