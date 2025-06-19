@@ -4,7 +4,13 @@ import SmileIcon from '@/app/components/icons/SmileIcon';
 import SendIcon from '@/app/components/icons/SendIcon';
 import { useState } from 'react';
 
-export default function InputComponent() {
+interface InputComponentProps {
+  showAttachButton?: boolean;
+}
+
+export default function InputComponent({
+  showAttachButton = true,
+}: InputComponentProps) {
   const [isFocused, setIsFocused] = useState(false);
 
   const handleFocus = () => setIsFocused(true);
@@ -26,9 +32,13 @@ export default function InputComponent() {
             input: { padding: '0px' },
           }}
         />
-        <button className="cursor-pointer  hover:text-bg-user">
-          <AtIcon className="h-4 w-4" />
-        </button>
+
+        {showAttachButton && (
+          <button className="cursor-pointer hover:text-bg-user">
+            <AtIcon className="h-4 w-4" />
+          </button>
+        )}
+
         <button
           className={`cursor-pointer ${isFocused ? 'text-bg-user' : 'text-text-grayLight'}`}
         >
