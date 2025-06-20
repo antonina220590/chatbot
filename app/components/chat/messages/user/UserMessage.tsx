@@ -2,19 +2,31 @@ import UserBubble from '@/app/components/icons/UserBubble';
 import CheckIcon from '@/app/components/icons/CheckIcon';
 import dayjs from 'dayjs';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import useMessageStore, { Message } from '@/app/stores/useMessageStore';
 
-export default function UserMessage() {
+interface UserMessageProps {
+  message: Message;
+}
+export default function UserMessage({ message }: UserMessageProps) {
+  const { deleteMessage } = useMessageStore();
+
+  const handleDelete = () => {
+    if (deleteMessage) {
+      deleteMessage(message.id);
+    }
+  };
+
   return (
     <div className="mb-4 mr-4">
       <div className="flex justify-end gap-2 ">
         <div className="relative flex flex-col bg-bg-user rounded-lg px-2 py-1 gap-1 xs:min-w-40">
           <UserBubble />
           <span className="font-body font-normal text-sm text-text-light xs:mr-20">
-            Anyone on for lunch today?
+            {message.text}
           </span>
           <div className="flex justify-end items-center gap-1">
             <span className="font-body shrink-0 font-light text-xs text-text-light flex justify-end">
-              {dayjs().format('h:mm A')}
+              {dayjs(message.timestamp).format('h:mm A')}
             </span>
             <CheckIcon />
           </div>
@@ -32,6 +44,8 @@ export default function UserMessage() {
           <EditOutlined />
         </button>
         <button
+          type="button"
+          onClick={handleDelete}
           className="text-gray-400 text-xs transition-colors
             hover:text-red-500
             [&_.anticon_svg]:fill-current
