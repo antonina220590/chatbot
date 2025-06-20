@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
 import { useState } from 'react';
-import InputComponent from '../../input/InputComponent';
+import InputComponent from '../../input/MessageInputCore';
 export default function ImageModal() {
   const [isModalOpen, _setIsModalOpen] = useState(true);
   return (
