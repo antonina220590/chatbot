@@ -6,7 +6,7 @@ import MoreIcon from '../icons/MoreIcon';
 export default function ChatHeader() {
   return (
     <header className="pt-[17px] pb-[15px] pl-[13px] pr-[24px] border-b border-gray-300">
-      <div className="flex justify-between items-center flex-wrap">
+      <div className="flex items-center gap-2 xs:flex-row xs:justify-between flex-col-reverse">
         <Image
           src="/avatar.png"
           alt="group avatar"

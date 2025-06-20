@@ -9,7 +9,7 @@ export default function UserMessage() {
       <div className="flex justify-end gap-2 ">
         <div className="relative flex flex-col bg-bg-user rounded-lg px-2 py-1 gap-1 xs:min-w-40">
           <UserBubble />
-          <span className="font-body font-normal text-sm text-text-light mr-20">
+          <span className="font-body font-normal text-sm text-text-light xs:mr-20">
             Anyone on for lunch today?
           </span>
           <div className="flex justify-end items-center gap-1">

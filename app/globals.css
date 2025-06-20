@@ -53,7 +53,7 @@
   --color-text-grayLight: #8e8e93;
   --color-text-light: #ffffff;
 
-  --breakpoint-xs: 17rem;
+  --breakpoint-xs: 20rem;
 }
 
 @keyframes wave {
