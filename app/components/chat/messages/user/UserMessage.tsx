@@ -8,11 +8,18 @@ interface UserMessageProps {
   message: Message;
 }
 export default function UserMessage({ message }: UserMessageProps) {
-  const { deleteMessage } = useMessageStore();
+  const deleteMessage = useMessageStore((state) => state.deleteMessage);
+  const startEditMessage = useMessageStore((state) => state.startEditMessage);
 
   const handleDelete = () => {
     if (deleteMessage) {
       deleteMessage(message.id);
+    }
+  };
+
+  const handleEditClick = () => {
+    if (startEditMessage) {
+      startEditMessage(message.id);
     }
   };
 
@@ -34,6 +41,8 @@ export default function UserMessage({ message }: UserMessageProps) {
       </div>
       <div className="flex justify-end gap-[10px] mt-[6px]">
         <button
+          type="button"
+          onClick={handleEditClick}
           className="
             text-gray-400 text-xs transition-colors
             hover:text-bg-user
