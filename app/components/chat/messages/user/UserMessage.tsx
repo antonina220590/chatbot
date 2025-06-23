@@ -26,7 +26,7 @@ export default function UserMessage({ message }: UserMessageProps) {
   return (
     <div className="mb-4 mr-4">
       <div className="flex justify-end gap-2 ">
-        <div className="relative flex flex-col bg-bg-user rounded-lg px-2 py-1 gap-1 xs:min-w-40">
+        <div className="relative flex flex-col bg-bg-user rounded-lg px-2 py-1 gap-1 xs:min-w-40 max-w-xs">
           <UserBubble />
           <span className="font-body font-normal text-sm text-text-light xs:mr-20">
             {message.text}

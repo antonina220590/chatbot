@@ -1,8 +1,8 @@
-import { Input, Popover } from 'antd';
+import { Input, Popover, InputRef } from 'antd';
 import AtIcon from '@/app/components/icons/AtIcon';
 import SmileIcon from '@/app/components/icons/SmileIcon';
 import SendIcon from '@/app/components/icons/SendIcon';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CheckCircleOutlined } from '@ant-design/icons';
 import EmojiContent from '../modal/EmojiModal/EmojiModal';
 
@@ -24,16 +24,32 @@ export default function MessageInputCore({
   editMode = false,
 }: MessageInputCoreProps) {
   const [isFocused, setIsFocused] = useState(false);
+  const [cursorPosition, setCursorPosition] = useState<number | null>(null);
+  const inputRef = useRef<InputRef | null>(null);
 
   const handleFocus = () => setIsFocused(true);
 
   const handleBlur = () => setIsFocused(false);
 
   const handleEmojiSelect = (emoji: string) => {
-    const currentText = value;
-    const newText = currentText + emoji;
+    const inputElement = inputRef.current?.input;
+    if (!inputElement) return;
+    const cursor = inputElement.selectionStart ?? (value ? value.length : 0);
+    const textBeforeEmoji = value?.slice(0, cursor);
+    const textAfterEmoji = value?.slice(cursor);
+    const newText = textBeforeEmoji + emoji + textAfterEmoji;
+    setCursorPosition(cursor + emoji.length);
     onChange?.(newText);
   };
+
+  useEffect(() => {
+    if (inputRef.current?.input && cursorPosition !== null) {
+      inputRef.current.input.selectionStart = cursorPosition;
+      inputRef.current.input.selectionEnd = cursorPosition;
+
+      setCursorPosition(null);
+    }
+  }, [value, cursorPosition]);
 
   return (
     <div className="flex gap-4">
@@ -56,6 +72,7 @@ export default function MessageInputCore({
         onChange={(e) => onChange?.(e.target.value)}
         onKeyDown={onKeyDown}
         value={value}
+        ref={inputRef}
         styles={{
           input: { padding: '0px' },
         }}

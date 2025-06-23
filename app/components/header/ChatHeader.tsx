@@ -8,6 +8,7 @@ export default function ChatHeader() {
     <header className="pt-[17px] pb-[15px] pl-[13px] pr-[24px] border-b border-gray-300">
       <div className="flex items-center gap-2 xs:flex-row xs:justify-between flex-col-reverse">
         <Image
+          priority={true}
           src="/avatar.png"
           alt="group avatar"
           width={84}
