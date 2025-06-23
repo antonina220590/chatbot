@@ -44,6 +44,13 @@ export default function InputComponent() {
     setInputValue('');
   };
 
+  const handleCancelEdit = () => {
+    if (editingMessageId) {
+      cancelEditMessage();
+      setInputValue('');
+    }
+  };
+
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
@@ -56,7 +63,7 @@ export default function InputComponent() {
       {editingMessageId && (
         <EditingMessage
           messageText={currentMessageToEdit}
-          onCancel={cancelEditMessage}
+          onCancel={handleCancelEdit}
         />
       )}
       <MessageInputCore
