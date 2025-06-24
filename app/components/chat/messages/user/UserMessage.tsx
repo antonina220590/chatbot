@@ -6,8 +6,12 @@ import useMessageStore, { Message } from '@/app/stores/useMessageStore';
 
 interface UserMessageProps {
   message: Message;
+  isConsecutive?: boolean;
 }
-export default function UserMessage({ message }: UserMessageProps) {
+export default function UserMessage({
+  message,
+  isConsecutive,
+}: UserMessageProps) {
   const deleteMessage = useMessageStore((state) => state.deleteMessage);
   const startEditMessage = useMessageStore((state) => state.startEditMessage);
 
@@ -27,7 +31,7 @@ export default function UserMessage({ message }: UserMessageProps) {
     <div className="mb-4 mr-4">
       <div className="flex justify-end gap-2 ">
         <div className="relative flex flex-col bg-bg-user rounded-lg px-2 py-1 gap-1 xs:min-w-40 max-w-xs">
-          <UserBubble />
+          {!isConsecutive && <UserBubble />}
           <span className="font-body font-normal text-sm text-text-light xs:mr-20">
             {message.text}
           </span>

@@ -21,9 +21,27 @@ export default function ChatWindow() {
     >
       <DateComponent />
       <BotMessage />
-      {messages.map((message) => (
-        <UserMessage key={message.id} message={message} />
-      ))}
+      {messages.map((message, index, allMessages) => {
+        const prevMessage = allMessages[index - 1];
+        let isConsecutive = false;
+        if (prevMessage) {
+          const isSameSender = prevMessage.sender === message.sender;
+          const isWithinTimeframe =
+            message.timestamp - prevMessage.timestamp < 30000;
+          if (isSameSender && isWithinTimeframe) {
+            isConsecutive = true;
+          }
+        }
+        if (message.sender === 'user') {
+          return (
+            <UserMessage
+              key={message.id}
+              message={message}
+              isConsecutive={isConsecutive}
+            />
+          );
+        }
+      })}
     </div>
   );
 }
