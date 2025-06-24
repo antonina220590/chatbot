@@ -18,13 +18,17 @@ interface MessageStore {
   editMessage: (id: string, text: string) => void;
   submitEditMessage: (text: string) => void;
   cancelEditMessage: () => void;
+  isBotTyping: boolean;
 }
+
+let botReplyTimeoutId: NodeJS.Timeout | null = null;
 
 const useMessageStore = create<MessageStore>()(
   persist(
     (set, get) => ({
       messages: [],
       editingMessageId: null,
+      isBotTyping: false,
       addMessage: (text) => {
         const newMessage: Message = {
           id: uuidv4(),
@@ -36,6 +40,23 @@ const useMessageStore = create<MessageStore>()(
         set((state) => ({
           messages: [...state.messages, newMessage],
         }));
+
+        if (botReplyTimeoutId === null) {
+          set({ isBotTyping: true });
+          botReplyTimeoutId = setTimeout(() => {
+            const botMessage: Message = {
+              id: uuidv4(),
+              text: 'Hello World!',
+              sender: 'bot',
+              timestamp: Date.now(),
+            };
+            set((state) => ({
+              messages: [...state.messages, botMessage],
+            }));
+            set({ isBotTyping: false });
+            botReplyTimeoutId = null;
+          }, 3000);
+        }
       },
 
       deleteMessage(id: string) {

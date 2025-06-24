@@ -7,6 +7,7 @@ import useMessageStore from '@/app/stores/useMessageStore';
 export default function ChatWindow() {
   const chatWindowRef = useRef<HTMLDivElement>(null);
   const messages = useMessageStore((state) => state.messages);
+  const isBotTyping = useMessageStore((state) => state.isBotTyping);
 
   useEffect(() => {
     if (chatWindowRef.current) {
@@ -20,7 +21,6 @@ export default function ChatWindow() {
       ref={chatWindowRef}
     >
       <DateComponent />
-      <BotMessage />
       {messages.map((message, index, allMessages) => {
         const prevMessage = allMessages[index - 1];
         let isConsecutive = false;
@@ -40,8 +40,11 @@ export default function ChatWindow() {
               isConsecutive={isConsecutive}
             />
           );
+        } else {
+          return <BotMessage key={message.id} message={message} />;
         }
       })}
+      <div>{isBotTyping && <p>...bot is typing</p>}</div>
     </div>
   );
 }

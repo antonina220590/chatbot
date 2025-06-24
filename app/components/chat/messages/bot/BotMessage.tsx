@@ -1,8 +1,13 @@
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import BotBubble from '@/app/components/icons/BotBubble';
+import { Message } from '@/app/stores/useMessageStore';
 
-export default function BotMessage() {
+interface BotMessageProps {
+  message: Message;
+}
+
+export default function BotMessage({ message }: BotMessageProps) {
   return (
     <div className="flex justify-start gap-2 mb-4">
       <div>
@@ -28,10 +33,10 @@ export default function BotMessage() {
           </span>
         </div>
         <span className="font-body font-normal text-sm text-text-grayDark">
-          Hello World!
+          {message.text}
         </span>
         <span className="font-body shrink-0 font-light text-xs text-text-gray flex justify-end">
-          {dayjs().format('h:mm A')}
+          {dayjs(message.timestamp).format('h:mm A')}
         </span>
       </div>
     </div>
