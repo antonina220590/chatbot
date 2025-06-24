@@ -1,10 +1,11 @@
-import { Input, Popover, InputRef } from 'antd';
+import { Input, Popover } from 'antd';
 import AtIcon from '@/app/components/icons/AtIcon';
 import SmileIcon from '@/app/components/icons/SmileIcon';
 import SendIcon from '@/app/components/icons/SendIcon';
 import { useEffect, useRef, useState } from 'react';
 import { CheckCircleOutlined } from '@ant-design/icons';
 import EmojiContent from '../modal/EmojiModal/EmojiModal';
+import type { TextAreaRef } from 'antd/es/input/TextArea';
 
 interface MessageInputCoreProps {
   showAttachButton?: boolean;
@@ -25,14 +26,12 @@ export default function MessageInputCore({
 }: MessageInputCoreProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [cursorPosition, setCursorPosition] = useState<number | null>(null);
-  const inputRef = useRef<InputRef | null>(null);
-
+  const inputRef = useRef<TextAreaRef | null>(null);
   const handleFocus = () => setIsFocused(true);
-
   const handleBlur = () => setIsFocused(false);
 
   const handleEmojiSelect = (emoji: string) => {
-    const inputElement = inputRef.current?.input;
+    const inputElement = inputRef.current?.resizableTextArea?.textArea;
     if (!inputElement) return;
     const cursor = inputElement.selectionStart ?? (value ? value.length : 0);
     const textBeforeEmoji = value?.slice(0, cursor);
@@ -43,53 +42,55 @@ export default function MessageInputCore({
   };
 
   useEffect(() => {
-    if (inputRef.current?.input && cursorPosition !== null) {
-      inputRef.current.input.selectionStart = cursorPosition;
-      inputRef.current.input.selectionEnd = cursorPosition;
-
+    const inputElement = inputRef.current?.resizableTextArea?.textArea;
+    if (inputElement && cursorPosition !== null) {
+      inputElement.selectionStart = cursorPosition;
+      inputElement.selectionEnd = cursorPosition;
       setCursorPosition(null);
     }
   }, [value, cursorPosition]);
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 items-end">
       <Popover
         content={<EmojiContent onEmojiSelect={handleEmojiSelect} />}
         trigger="click"
         placement="topLeft"
         arrow={false}
       >
-        <button className="cursor-pointer hover:text-bg-user">
+        <button className="cursor-pointer hover:text-bg-user pb-1">
           <SmileIcon className="h-4 w-4" />
         </button>
       </Popover>
-      <Input
-        placeholder="Start typing..."
-        className="flex-1"
-        variant="borderless"
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        onChange={(e) => onChange?.(e.target.value)}
-        onKeyDown={onKeyDown}
-        value={value}
-        ref={inputRef}
-        styles={{
-          input: { padding: '0px' },
-        }}
-      />
-
+      <div className="flex-1 max-h-[40vh] overflow-hidden">
+        <Input.TextArea
+          placeholder="Start typing..."
+          className="w-full align-top"
+          variant="borderless"
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onChange={(e) => onChange?.(e.target.value)}
+          onKeyDown={onKeyDown}
+          value={value}
+          ref={inputRef}
+          autoSize={{ minRows: 1, maxRows: 8 }}
+          styles={{
+            textarea: { padding: '0px', resize: 'none' },
+          }}
+        />
+      </div>
       {showAttachButton && (
-        <button className="cursor-pointer hover:text-bg-user">
+        <button className="cursor-pointer hover:text-bg-user pb-1">
           <AtIcon className="h-4 w-4" />
         </button>
       )}
 
       <button
         onClick={onSend}
-        className={`cursor-pointer ${isFocused ? 'text-bg-user' : 'text-text-grayLight'}`}
+        className={`cursor-pointer ${isFocused ? 'text-bg-user' : 'text-text-grayLight'} flex pb-1`}
       >
         {editMode ? (
-          <CheckCircleOutlined className="text-blue-500 text-xl" />
+          <CheckCircleOutlined className="text-blue-500 text-xl h-4 w-4" />
         ) : (
           <SendIcon className="h-4 w-4" />
         )}

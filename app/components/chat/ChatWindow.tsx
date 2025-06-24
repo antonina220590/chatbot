@@ -6,7 +6,7 @@ import useMessageStore from '@/app/stores/useMessageStore';
 export default function ChatWindow() {
   const { messages } = useMessageStore();
   return (
-    <div className="grow overflow-y-auto min-h-0 p-4">
+    <div className="grow overflow-y-auto min-h-0 p-4 border-b border-gray-300">
       <DateComponent />
       <BotMessage />
       {messages.map((message) => (

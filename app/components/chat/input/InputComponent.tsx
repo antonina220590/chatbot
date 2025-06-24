@@ -59,7 +59,7 @@ export default function InputComponent() {
   };
 
   return (
-    <div className="border-t border-gray-300 px-5.5 py-3 shrink-0">
+    <div className=" px-5.5 py-3">
       {editingMessageId && (
         <EditingMessage
           messageText={currentMessageToEdit}

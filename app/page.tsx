@@ -1,8 +1,20 @@
 'use client';
 
 import ChatWindow from './components/chat/ChatWindow';
-import InputComponent from './components/chat/input/InputComponent';
 import ChatHeader from './components/header/ChatHeader';
+import dynamic from 'next/dynamic';
+
+const InputSkeleton = () => {
+  return <div className="h-12 shrink-0 animate-spin" />;
+};
+
+const DynamicInputComponent = dynamic(
+  () => import('./components/chat/input/InputComponent'),
+  {
+    ssr: false,
+    loading: () => <InputSkeleton />,
+  }
+);
 
 export default function Home() {
   return (
@@ -10,7 +22,7 @@ export default function Home() {
       <div className="flex flex-col h-full w-full max-w-[656px] bg-white overflow-hidden">
         <ChatHeader />
         <ChatWindow />
-        <InputComponent />
+        <DynamicInputComponent />
       </div>
     </div>
   );
