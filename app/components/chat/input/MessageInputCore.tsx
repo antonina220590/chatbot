@@ -54,7 +54,7 @@ export default function MessageInputCore({
     <div className="flex gap-4 items-end">
       <Popover
         content={<EmojiContent onEmojiSelect={handleEmojiSelect} />}
-        trigger="click"
+        trigger="hover"
         placement="topLeft"
         arrow={false}
       >
