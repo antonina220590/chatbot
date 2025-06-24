@@ -1,12 +1,24 @@
+import { useEffect, useRef } from 'react';
 import DateComponent from '../date/DateComponent';
 import BotMessage from './messages/bot/BotMessage';
 import UserMessage from './messages/user/UserMessage';
 import useMessageStore from '@/app/stores/useMessageStore';
 
 export default function ChatWindow() {
-  const { messages } = useMessageStore();
+  const chatWindowRef = useRef<HTMLDivElement>(null);
+  const messages = useMessageStore((state) => state.messages);
+
+  useEffect(() => {
+    if (chatWindowRef.current) {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   return (
-    <div className="grow overflow-y-auto min-h-0 p-4 border-b border-gray-300">
+    <div
+      className="grow overflow-y-auto min-h-0 p-4 border-b border-gray-300"
+      ref={chatWindowRef}
+    >
       <DateComponent />
       <BotMessage />
       {messages.map((message) => (
