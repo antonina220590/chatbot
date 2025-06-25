@@ -35,21 +35,23 @@ export default function UserMessage({
           {!isConsecutive && <UserBubble />}
           <div className="flex flex-col">
             {message.imageUrl && message.width && message.height && (
-              <Image
-                src={message.imageUrl}
-                alt={message.text || 'User uploaded image'}
-                width={message.width}
-                height={message.height}
-                className="max-w-full h-auto rounded-t-lg z-10"
-                style={{
-                  borderBottomLeftRadius: message.text ? 0 : '',
-                  borderBottomRightRadius: message.text ? 0 : '',
-                }}
-              />
+              <div className="p-3">
+                <Image
+                  src={message.imageUrl}
+                  alt={message.text || 'User uploaded image'}
+                  width={message.width}
+                  height={message.height}
+                  className="max-h-[60vh] inline-block overflow-hidden border-0 rounded-md"
+                  style={{
+                    objectFit: 'contain',
+                    width: '100%',
+                    height: '100%',
+                  }}
+                />
+              </div>
             )}
             {message.text && (
               <div className="p-2">
-                {' '}
                 <span className="text-white font-jost font-normal text-medium flex break-words">
                   {message.text}
                 </span>
@@ -63,30 +65,30 @@ export default function UserMessage({
             </div>
           </div>
         </div>
-        <div className="flex justify-end gap-[10px] mt-[6px]">
-          <button
-            type="button"
-            onClick={handleEditClick}
-            className="
+      </div>
+      <div className="flex justify-end gap-[10px] mt-[6px]">
+        <button
+          type="button"
+          onClick={handleEditClick}
+          className="
             text-gray-400 text-xs transition-colors
             hover:text-bg-user
             [&_.anticon_svg]:fill-current
             cursor-pointer
           "
-          >
-            <EditOutlined />
-          </button>
-          <button
-            type="button"
-            onClick={handleDelete}
-            className="text-gray-400 text-xs transition-colors
+        >
+          <EditOutlined />
+        </button>
+        <button
+          type="button"
+          onClick={handleDelete}
+          className="text-gray-400 text-xs transition-colors
             hover:text-red-500
             [&_.anticon_svg]:fill-current
             cursor-pointer"
-          >
-            <DeleteOutlined />
-          </button>
-        </div>
+        >
+          <DeleteOutlined />
+        </button>
       </div>
     </div>
   );

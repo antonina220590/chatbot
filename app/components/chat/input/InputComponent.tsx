@@ -17,6 +17,9 @@ export default function InputComponent() {
   const setPreviewImage = useInputStore((state) => state.setPreviewImage);
   const previewImage = useInputStore((state) => state.previewImage);
   const clearInputState = useInputStore((state) => state.clearInputState);
+  const openAttachmentModal = useInputStore(
+    (state) => state.openAttachmentModal
+  );
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -86,8 +89,11 @@ export default function InputComponent() {
     if (!file) return;
 
     try {
+      const textToMove = inputValue;
       const imageData = await processImageFile(file);
       setPreviewImage(imageData);
+      setInputValue('');
+      openAttachmentModal(textToMove);
     } catch (error) {
       throw new Error(String(error));
     }

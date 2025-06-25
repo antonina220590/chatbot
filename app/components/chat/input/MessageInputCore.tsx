@@ -55,7 +55,7 @@ export default function MessageInputCore({
     }
   }, [value, cursorPosition]);
 
-  const isButtonActive = isFocused || value !== '';
+  const isButtonActive = isFocused || value !== '' || forceSendActive;
 
   return (
     <div className="flex gap-4 items-end">
@@ -97,7 +97,7 @@ export default function MessageInputCore({
 
       <button
         onClick={onSend}
-        className={`cursor-pointer ${isButtonActive && forceSendActive ? 'text-bg-user' : 'text-text-grayLight'} flex pb-1`}
+        className={`cursor-pointer ${isButtonActive ? 'text-bg-user' : 'text-text-grayLight'} flex pb-1`}
       >
         {editMode ? (
           <CheckCircleOutlined className="text-blue-500 text-xl h-4 w-4" />

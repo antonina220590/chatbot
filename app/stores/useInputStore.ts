@@ -8,34 +8,46 @@ interface PreviewImage {
 
 interface InputStore {
   inputValue: string;
-  isAttachmentModalOpen: boolean;
   setInputValue: (newValue: string) => void;
+  isAttachmentModalOpen: boolean;
   previewImage: PreviewImage | null;
   setPreviewImage: (image: PreviewImage | null) => void;
-  openAttachmentModal: () => void;
+  openAttachmentModal: (textToTransfer: string) => void;
   closeAttachmentModal: () => void;
+  captionForModal: string | null;
   clearInputState: () => void;
 }
 
-const useInputStore = create<InputStore>((set, get) => ({
+const useInputStore = create<InputStore>((set) => ({
   inputValue: '',
-  setInputValue: (newValue: string) => set(() => ({ inputValue: newValue })),
   previewImage: null,
+  captionForModal: null,
   isAttachmentModalOpen: false,
+  setInputValue: (newValue: string) => set(() => ({ inputValue: newValue })),
+  openAttachmentModal: (textToTransfer) => {
+    set({
+      isAttachmentModalOpen: true,
+      captionForModal: textToTransfer || null,
+    });
+  },
+
+  closeAttachmentModal: () => {
+    set({
+      isAttachmentModalOpen: false,
+      captionForModal: null,
+    });
+  },
+
   setPreviewImage: (image) => {
     set({ previewImage: image });
-
-    if (image) {
-      get().openAttachmentModal();
-    }
   },
-  openAttachmentModal: () => set({ isAttachmentModalOpen: true }),
-  closeAttachmentModal: () => set({ isAttachmentModalOpen: false }),
+
   clearInputState: () =>
     set({
       inputValue: '',
       previewImage: null,
       isAttachmentModalOpen: false,
+      captionForModal: null,
     }),
 }));
 
