@@ -4,6 +4,7 @@ import BotMessage from './messages/bot/BotMessage';
 import UserMessage from './messages/user/UserMessage';
 import useMessageStore from '@/app/stores/useMessageStore';
 import TypingIndicator from './indicator/TypingIndicator';
+import { AnimatePresence } from 'framer-motion';
 
 export default function ChatWindow() {
   const chatWindowRef = useRef<HTMLDivElement>(null);
@@ -22,29 +23,31 @@ export default function ChatWindow() {
       ref={chatWindowRef}
     >
       <DateComponent />
-      {messages.map((message, index, allMessages) => {
-        const prevMessage = allMessages[index - 1];
-        let isConsecutive = false;
-        if (prevMessage) {
-          const isSameSender = prevMessage.sender === message.sender;
-          const isWithinTimeframe =
-            message.timestamp - prevMessage.timestamp < 30000;
-          if (isSameSender && isWithinTimeframe) {
-            isConsecutive = true;
+      <AnimatePresence>
+        {messages.map((message, index, allMessages) => {
+          const prevMessage = allMessages[index - 1];
+          let isConsecutive = false;
+          if (prevMessage) {
+            const isSameSender = prevMessage.sender === message.sender;
+            const isWithinTimeframe =
+              message.timestamp - prevMessage.timestamp < 30000;
+            if (isSameSender && isWithinTimeframe) {
+              isConsecutive = true;
+            }
           }
-        }
-        if (message.sender === 'user') {
-          return (
-            <UserMessage
-              key={message.id}
-              message={message}
-              isConsecutive={isConsecutive}
-            />
-          );
-        } else {
-          return <BotMessage key={message.id} message={message} />;
-        }
-      })}
+          if (message.sender === 'user') {
+            return (
+              <UserMessage
+                key={message.id}
+                message={message}
+                isConsecutive={isConsecutive}
+              />
+            );
+          } else {
+            return <BotMessage key={message.id} message={message} />;
+          }
+        })}
+      </AnimatePresence>
       <div>{isBotTyping && <TypingIndicator />}</div>
     </div>
   );
