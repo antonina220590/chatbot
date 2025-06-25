@@ -55,7 +55,7 @@ const useMessageStore = create<MessageStore>()(
             }));
             set({ isBotTyping: false });
             botReplyTimeoutId = null;
-          }, 3000);
+          }, 3500);
         }
       },
 

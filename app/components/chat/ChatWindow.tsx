@@ -3,6 +3,7 @@ import DateComponent from '../date/DateComponent';
 import BotMessage from './messages/bot/BotMessage';
 import UserMessage from './messages/user/UserMessage';
 import useMessageStore from '@/app/stores/useMessageStore';
+import TypingIndicator from './indicator/TypingIndicator';
 
 export default function ChatWindow() {
   const chatWindowRef = useRef<HTMLDivElement>(null);
@@ -44,7 +45,8 @@ export default function ChatWindow() {
           return <BotMessage key={message.id} message={message} />;
         }
       })}
-      <div>{isBotTyping && <p>...bot is typing</p>}</div>
+      <div>{isBotTyping && <TypingIndicator />}</div>
     </div>
   );
 }
+
