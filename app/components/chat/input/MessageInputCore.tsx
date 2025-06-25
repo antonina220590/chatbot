@@ -14,6 +14,9 @@ interface MessageInputCoreProps {
   onSend?: () => void;
   onKeyDown?: (event: React.KeyboardEvent) => void;
   editMode?: boolean;
+  onAttachClick?: () => void;
+
+  forceSendActive?: boolean;
 }
 
 export default function MessageInputCore({
@@ -23,6 +26,8 @@ export default function MessageInputCore({
   onSend,
   onKeyDown,
   editMode = false,
+  onAttachClick,
+  forceSendActive = false,
 }: MessageInputCoreProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [cursorPosition, setCursorPosition] = useState<number | null>(null);
@@ -82,14 +87,17 @@ export default function MessageInputCore({
         />
       </div>
       {showAttachButton && (
-        <button className="cursor-pointer hover:text-bg-user pb-1">
+        <button
+          onClick={onAttachClick}
+          className="cursor-pointer hover:text-bg-user pb-1"
+        >
           <AtIcon className="h-4 w-4" />
         </button>
       )}
 
       <button
         onClick={onSend}
-        className={`cursor-pointer ${isButtonActive ? 'text-bg-user' : 'text-text-grayLight'} flex pb-1`}
+        className={`cursor-pointer ${isButtonActive && forceSendActive ? 'text-bg-user' : 'text-text-grayLight'} flex pb-1`}
       >
         {editMode ? (
           <CheckCircleOutlined className="text-blue-500 text-xl h-4 w-4" />

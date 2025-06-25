@@ -4,15 +4,25 @@ import { v4 as uuidv4 } from 'uuid';
 
 export interface Message {
   id: string;
-  text: string;
+  text?: string;
   timestamp: number;
   sender: 'user' | 'bot';
+  imageUrl?: string;
+  width?: number;
+  height?: number;
+}
+
+interface MessageData {
+  text?: string;
+  imageUrl?: string;
+  width?: number;
+  height?: number;
 }
 
 interface MessageStore {
   messages: Message[];
   editingMessageId: string | null;
-  addMessage: (text: string) => void;
+  addMessage: (data: MessageData) => void;
   deleteMessage: (id: string) => void;
   startEditMessage: (id: string) => void;
   editMessage: (id: string, text: string) => void;
@@ -29,12 +39,18 @@ const useMessageStore = create<MessageStore>()(
       messages: [],
       editingMessageId: null,
       isBotTyping: false,
-      addMessage: (text) => {
+      addMessage: (data: MessageData) => {
+        if (!data.text && !data.imageUrl) {
+          return;
+        }
         const newMessage: Message = {
           id: uuidv4(),
-          text: text,
           sender: 'user',
           timestamp: Date.now(),
+          text: data.text,
+          imageUrl: data.imageUrl,
+          width: data.width,
+          height: data.height,
         };
 
         set((state) => ({
