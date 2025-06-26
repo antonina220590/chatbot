@@ -15,11 +15,11 @@ export default function ChatWindow() {
     if (chatWindowRef.current) {
       chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, isBotTyping]);
 
   return (
     <div
-      className="grow overflow-y-auto min-h-0 p-4 border-b border-gray-300"
+      className="relative grow overflow-y-auto min-h-0 p-4 border-b border-gray-300 flex flex-col"
       ref={chatWindowRef}
     >
       <DateComponent />
@@ -48,6 +48,8 @@ export default function ChatWindow() {
           }
         })}
       </AnimatePresence>
+      <div className="grow" />
+
       <div>{isBotTyping && <TypingIndicator />}</div>
     </div>
   );

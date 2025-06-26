@@ -44,7 +44,7 @@ export default function UserMessage({
       exit="exit"
       transition={{ duration: 0.3, ease: 'easeOut' }}
     >
-      <div className="mb-4 mr-4">
+      <div className="mb-4 mr-2">
         <div className="flex justify-end gap-2 ">
           <div className="relative flex flex-col bg-bg-user rounded-lg px-2 py-1 gap-1 xs:min-w-40 max-w-xs">
             {!isConsecutive && <UserBubble />}
@@ -66,7 +66,7 @@ export default function UserMessage({
                 </div>
               )}
               {message.text && (
-                <div className="p-2">
+                <div className="pr-20">
                   <span className="text-white font-body font-normal text-sm flex break-words">
                     {message.text}
                   </span>
