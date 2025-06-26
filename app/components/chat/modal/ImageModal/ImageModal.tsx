@@ -5,7 +5,8 @@ import { Modal } from 'antd';
 import MessageInputCore from '../../input/MessageInputCore';
 import useInputStore from '@/app/stores/useInputStore';
 import useMessageStore from '@/app/stores/useMessageStore';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { TextAreaRef } from 'antd/es/input/TextArea';
 export default function ImageModal() {
   const closeAttachmentModal = useInputStore(
     (state) => state.closeAttachmentModal
@@ -17,11 +18,12 @@ export default function ImageModal() {
     (state) => state.isAttachmentModalOpen
   );
   const captionForModal = useInputStore((state) => state.captionForModal);
+  const modalInputRef = useRef<TextAreaRef>(null);
 
   const [caption, setCaption] = useState('');
   const isButtonActive = previewImage !== null;
 
-  const handleSendWithImage = () => {
+  const handleSendWithImage = useCallback(() => {
     if (!previewImage) return;
     addMessage({
       text: caption.trim(),
@@ -31,7 +33,7 @@ export default function ImageModal() {
     });
     setCaption('');
     clearInputState();
-  };
+  }, [addMessage, caption, clearInputState, previewImage]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' && !event.shiftKey) {
@@ -51,6 +53,27 @@ export default function ImageModal() {
       setCaption(captionForModal);
     }
   }, [isAttachmentModalOpen, captionForModal]);
+
+  useEffect(() => {
+    const handleGlobalModalKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        if (
+          document.activeElement ===
+          modalInputRef.current?.resizableTextArea?.textArea
+        ) {
+          return;
+        }
+        event.preventDefault();
+        handleSendWithImage();
+      }
+    };
+    if (isAttachmentModalOpen) {
+      document.addEventListener('keydown', handleGlobalModalKeyDown);
+    }
+    return () => {
+      document.removeEventListener('keydown', handleGlobalModalKeyDown);
+    };
+  }, [isAttachmentModalOpen, handleSendWithImage]);
 
   if (!previewImage) {
     return null;
@@ -100,6 +123,7 @@ export default function ImageModal() {
               forceSendActive={isButtonActive}
               onKeyDown={handleKeyDown}
               showAttachButton={false}
+              ref={modalInputRef}
             />
           </div>
         </div>

@@ -2,12 +2,13 @@ import { Input, Popover } from 'antd';
 import AtIcon from '@/app/components/icons/AtIcon';
 import SmileIcon from '@/app/components/icons/SmileIcon';
 import SendIcon from '@/app/components/icons/SendIcon';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CheckCircleOutlined } from '@ant-design/icons';
 import EmojiContent from '../modal/EmojiModal/EmojiModal';
 import type { TextAreaRef } from 'antd/es/input/TextArea';
 
 interface MessageInputCoreProps {
+  ref?: React.Ref<TextAreaRef>;
   showAttachButton?: boolean;
   value?: string;
   onChange?: (value: string) => void;
@@ -20,6 +21,7 @@ interface MessageInputCoreProps {
 }
 
 export default function MessageInputCore({
+  ref,
   showAttachButton = true,
   value,
   onChange,
@@ -31,29 +33,39 @@ export default function MessageInputCore({
 }: MessageInputCoreProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [cursorPosition, setCursorPosition] = useState<number | null>(null);
-  const inputRef = useRef<TextAreaRef | null>(null);
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(false);
 
   const handleEmojiSelect = (emoji: string) => {
-    const inputElement = inputRef.current?.resizableTextArea?.textArea;
-    if (!inputElement) return;
-    const cursor = inputElement.selectionStart ?? (value ? value.length : 0);
-    const textBeforeEmoji = value?.slice(0, cursor);
-    const textAfterEmoji = value?.slice(cursor);
-    const newText = textBeforeEmoji + emoji + textAfterEmoji;
-    setCursorPosition(cursor + emoji.length);
-    onChange?.(newText);
+    if (
+      ref &&
+      typeof ref !== 'function' &&
+      ref.current?.resizableTextArea?.textArea
+    ) {
+      const inputElement = ref.current.resizableTextArea.textArea;
+
+      const cursor = inputElement.selectionStart ?? (value ? value.length : 0);
+      const textBeforeEmoji = value?.slice(0, cursor);
+      const textAfterEmoji = value?.slice(cursor);
+      const newText = textBeforeEmoji + emoji + textAfterEmoji;
+      setCursorPosition(cursor + emoji.length);
+      onChange?.(newText);
+    }
   };
 
   useEffect(() => {
-    const inputElement = inputRef.current?.resizableTextArea?.textArea;
-    if (inputElement && cursorPosition !== null) {
+    if (
+      ref &&
+      typeof ref !== 'function' &&
+      ref.current?.resizableTextArea?.textArea &&
+      cursorPosition !== null
+    ) {
+      const inputElement = ref.current.resizableTextArea.textArea;
       inputElement.selectionStart = cursorPosition;
       inputElement.selectionEnd = cursorPosition;
       setCursorPosition(null);
     }
-  }, [value, cursorPosition]);
+  }, [value, cursorPosition, ref]);
 
   const isButtonActive = isFocused || value !== '' || forceSendActive;
 
@@ -71,6 +83,7 @@ export default function MessageInputCore({
       </Popover>
       <div className="flex-1 max-h-[40vh] overflow-hidden">
         <Input.TextArea
+          ref={ref}
           placeholder="Start typing..."
           className="w-full align-top"
           variant="borderless"
@@ -79,7 +92,6 @@ export default function MessageInputCore({
           onChange={(e) => onChange?.(e.target.value)}
           onKeyDown={onKeyDown}
           value={value}
-          ref={inputRef}
           autoSize={{ minRows: 1, maxRows: 8 }}
           styles={{
             textarea: { padding: '0px', resize: 'none' },

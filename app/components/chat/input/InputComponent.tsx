@@ -2,9 +2,10 @@ import useMessageStore from '@/app/stores/useMessageStore';
 import MessageInputCore from './MessageInputCore';
 import useInputStore from '@/app/stores/useInputStore';
 import EditingMessage from '../edit/EditingMessage';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { processImageFile } from '@/app/utils/processImage';
 import ImageModal from '../modal/ImageModal/ImageModal';
+import { TextAreaRef } from 'antd/es/input/TextArea';
 
 export default function InputComponent() {
   const inputValue = useInputStore((state) => state.inputValue);
@@ -15,13 +16,15 @@ export default function InputComponent() {
   const submitEditMessage = useMessageStore((state) => state.submitEditMessage);
   const cancelEditMessage = useMessageStore((state) => state.cancelEditMessage);
   const setPreviewImage = useInputStore((state) => state.setPreviewImage);
-  const previewImage = useInputStore((state) => state.previewImage);
-  const clearInputState = useInputStore((state) => state.clearInputState);
   const openAttachmentModal = useInputStore(
     (state) => state.openAttachmentModal
   );
+  const isAttachmentModalOpen = useInputStore(
+    (state) => state.isAttachmentModalOpen
+  );
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<TextAreaRef>(null);
 
   useEffect(() => {
     if (editingMessageId) {
@@ -43,24 +46,23 @@ export default function InputComponent() {
     setInputValue(value);
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = useCallback(() => {
     const trimmedValue = inputValue.trim();
-    const imageToSend = previewImage;
-
-    if (!trimmedValue && !imageToSend) return;
-
-    if (trimmedValue && editingMessageId) {
+    if (trimmedValue === '') return;
+    if (editingMessageId) {
       submitEditMessage(trimmedValue);
     } else {
-      addMessage({
-        text: trimmedValue,
-        imageUrl: imageToSend?.url,
-        width: imageToSend?.width,
-        height: imageToSend?.height,
-      });
+      addMessage({ text: trimmedValue });
     }
-    clearInputState();
-  };
+    setInputValue('');
+    inputRef.current?.focus();
+  }, [
+    addMessage,
+    editingMessageId,
+    inputValue,
+    setInputValue,
+    submitEditMessage,
+  ]);
 
   const handleCancelEdit = () => {
     if (editingMessageId) {
@@ -68,6 +70,29 @@ export default function InputComponent() {
       setInputValue('');
     }
   };
+
+  useEffect(() => {
+    const handleGlobalKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        if (isAttachmentModalOpen) {
+          return;
+        }
+        if (
+          document.activeElement ===
+          inputRef.current?.resizableTextArea?.textArea
+        ) {
+          return;
+        }
+        event.preventDefault();
+        handleSendMessage();
+      }
+    };
+
+    document.addEventListener('keydown', handleGlobalKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleGlobalKeyDown);
+    };
+  }, [handleSendMessage, isAttachmentModalOpen]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' && !event.shiftKey) {
@@ -114,6 +139,7 @@ export default function InputComponent() {
         onKeyDown={handleKeyDown}
         editMode={editingMessageId !== null}
         onAttachClick={handleAttachClick}
+        ref={inputRef}
       />
       <input
         type="file"
