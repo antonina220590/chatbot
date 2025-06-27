@@ -46,7 +46,7 @@ export default function UserMessage({
     >
       <div className="mb-4 mr-2">
         <div className="flex justify-end gap-2 ">
-          <div className="relative flex flex-col bg-bg-user rounded-lg px-2 py-1 gap-1 xs:min-w-40 max-w-xs">
+          <div className="relative flex flex-col bg-bg-user-msg rounded-lg px-2 py-1 gap-1 xs:min-w-40 max-w-xs">
             {!isConsecutive && <UserBubble />}
             <div className="flex flex-col">
               {message.imageUrl && message.width && message.height && (
@@ -67,7 +67,7 @@ export default function UserMessage({
               )}
               {message.text && (
                 <div className="pr-20">
-                  <span className="text-white font-body font-normal text-sm flex break-words">
+                  <span className="text-text-light font-body font-normal text-sm flex break-words">
                     {message.text}
                   </span>
                 </div>
@@ -87,7 +87,7 @@ export default function UserMessage({
             onClick={handleEditClick}
             className="
             text-gray-400 text-xs transition-colors
-            hover:text-bg-user
+            hover:text-text-accent
             [&_.anticon_svg]:fill-current
             cursor-pointer
           "

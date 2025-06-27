@@ -11,6 +11,6 @@ export const lightTheme: ThemeConfig = {
 export const darkTheme: ThemeConfig = {
   algorithm: theme.darkAlgorithm,
   token: {
-    colorBgElevated: '#19212d',
+    colorBgElevated: '#2C2C2E',
   },
 };

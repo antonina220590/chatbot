@@ -78,7 +78,7 @@ export default function MessageInputCore({
         arrow={false}
         color="bg-bg-primary"
       >
-        <button className="cursor-pointer hover:text-bg-user pb-1 text-text-dark">
+        <button className="cursor-pointer hover:text-text-accent pb-1 text-text-dark">
           <SmileIcon className="h-4 w-4" />
         </button>
       </Popover>
@@ -102,7 +102,7 @@ export default function MessageInputCore({
       {showAttachButton && (
         <button
           onClick={onAttachClick}
-          className="cursor-pointer hover:text-bg-user pb-1 text-text-dark"
+          className="cursor-pointer hover:text-text-accent pb-1 text-text-dark"
         >
           <AtIcon className="h-4 w-4" />
         </button>
@@ -110,10 +110,10 @@ export default function MessageInputCore({
 
       <button
         onClick={onSend}
-        className={`cursor-pointer ${isButtonActive ? 'text-bg-user' : 'text-text-grayLight'} flex pb-1`}
+        className={`cursor-pointer ${isButtonActive ? 'text-text-accent' : 'text-text-grayLight'} flex pb-1`}
       >
         {editMode ? (
-          <CheckCircleOutlined className="text-blue-500 text-xl h-4 w-4" />
+          <CheckCircleOutlined className="text-text-accent text-xl h-4 w-4" />
         ) : (
           <SendIcon className="h-4 w-4" />
         )}

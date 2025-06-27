@@ -14,15 +14,15 @@ export default function EditingMessage({
 
   return (
     <div className="flex py-2 justify-between">
-      <div className="flex flex-col border-l-2 border-bg-user pl-3">
-        <p className="font-body font-medium text-bg-user">Edit message</p>
+      <div className="flex flex-col border-l-2 border-text-accent pl-3">
+        <p className="font-body font-medium text-text-accent">Edit message</p>
         <span className="font-jost text-text-dark">{displayText}</span>
       </div>
       <button
-        className="flex justify-end text-bg-user cursor-pointer hover:text-red-500"
+        className="flex justify-end items-start text-text-accent cursor-pointer hover:text-red-500"
         onClick={onCancel}
       >
-        <CloseCircleOutlined style={{ fontSize: '20px' }} />
+        <CloseCircleOutlined style={{ fontSize: '17px' }} />
       </button>
     </div>
   );

@@ -19,7 +19,7 @@ export default function ChatWindow() {
 
   return (
     <div
-      className="relative grow overflow-y-auto min-h-0 p-4 border-b border-gray-300 flex flex-col bg-bg-chat"
+      className="relative grow overflow-y-auto min-h-0 p-4 border-b border-gray-300 dark:border-b-[0.1px] dark:border-gray-500 flex flex-col bg-bg-chat"
       ref={chatWindowRef}
     >
       <DateComponent />

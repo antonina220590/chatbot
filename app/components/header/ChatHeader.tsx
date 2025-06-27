@@ -25,11 +25,7 @@ export default function ChatHeader() {
     },
     {
       key: '2',
-      label: (
-        <a className="p-4" onClick={clearChat}>
-          Clear chat
-        </a>
-      ),
+      label: <a onClick={clearChat}>Clear chat</a>,
       icon: <DeleteOutlined />,
     },
     {
@@ -40,7 +36,7 @@ export default function ChatHeader() {
   ];
 
   return (
-    <header className="pt-[17px] pb-[15px] pl-[13px] pr-[24px] border-b border-gray-300 bg-bg-chat">
+    <header className="pt-[17px] pb-[15px] pl-[13px] pr-[24px] border-b border-gray-300 dark:border-b-[0.1px] dark:border-gray-500 bg-bg-chat">
       <div className="flex items-center gap-2 xs:flex-row xs:justify-between flex-col-reverse">
         <Image
           priority={true}
