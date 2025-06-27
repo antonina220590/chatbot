@@ -125,7 +125,7 @@ export default function InputComponent() {
   };
 
   return (
-    <div className=" px-5.5 py-3">
+    <div className=" px-5.5 py-3 bg-bg-chat">
       {editingMessageId && (
         <EditingMessage
           messageText={currentMessageToEdit}

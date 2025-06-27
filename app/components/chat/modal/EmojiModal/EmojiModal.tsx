@@ -6,7 +6,7 @@ interface EmojiContentProps {
 
 export default function EmojiContent({ onEmojiSelect }: EmojiContentProps) {
   return (
-    <div className="grid grid-cols-8 gap-2 p-2">
+    <div className="grid grid-cols-8 gap-2 p-2 bg-bg-primary">
       {emojis.map((emoji) => (
         <button
           key={emoji}

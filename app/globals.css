@@ -1,8 +1,19 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   body {
     @apply bg-bg-primary;
+  }
+
+  .dark {
+    --color-bg-primary: #19212d;
+    --color-bg-chat: #213041;
+
+    --color-text-gray: #ffffff;
+    --color-text-dark: #ffffff;
+    --color-text-grayDark: #ffffff;
   }
 }
 
@@ -10,7 +21,7 @@
   --font-body: 'Jost', sans-serif;
 
   --color-bg-primary: #f2f2f7;
-  --color-bg-chat: #000000;
+  --color-bg-chat: #ffffff;
   --color-bg-user: #007aff;
   --color-chat-msg: #f2f2f7;
   --color-user-msg: #3b82f6;

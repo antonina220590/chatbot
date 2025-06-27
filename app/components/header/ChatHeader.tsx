@@ -4,10 +4,13 @@ import Image from 'next/image';
 import MoreIcon from '../icons/MoreIcon';
 import { Dropdown, MenuProps, Space } from 'antd';
 import useMessageStore from '@/app/stores/useMessageStore';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, MoonOutlined, SunOutlined } from '@ant-design/icons';
+import { useThemeStore } from '@/app/stores/useThemeStore';
 
 export default function ChatHeader() {
   const clearChat = useMessageStore((state) => state.clearChat);
+  const theme = useThemeStore((state) => state.theme);
+  const toggleTheme = useThemeStore((state) => state.toggleTheme);
 
   const items: MenuProps['items'] = [
     {
@@ -31,12 +34,13 @@ export default function ChatHeader() {
     },
     {
       key: '3',
-      label: 'Change theme',
-      // icon: <.../>
+      label: <a onClick={toggleTheme}>Change theme</a>,
+      icon: theme === 'light' ? <MoonOutlined /> : <SunOutlined />,
     },
   ];
+
   return (
-    <header className="pt-[17px] pb-[15px] pl-[13px] pr-[24px] border-b border-gray-300">
+    <header className="pt-[17px] pb-[15px] pl-[13px] pr-[24px] border-b border-gray-300 bg-bg-chat">
       <div className="flex items-center gap-2 xs:flex-row xs:justify-between flex-col-reverse">
         <Image
           priority={true}

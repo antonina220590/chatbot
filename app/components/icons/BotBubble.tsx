@@ -1,6 +1,6 @@
 export default function BotBubble() {
   return (
-    <div className="absolute left-[-8px] top-0 h-[15px] w-[9px]">
+    <div className="absolute left-[-8px] top-0 h-[15px] w-[9px] text-bg-primary">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="18"
@@ -10,13 +10,13 @@ export default function BotBubble() {
       >
         <path
           d="M9 0C9 0 3.26206 0 1.8 0C0.33795 0 3.17097e-05 1.5 1.35003 3C2.70003 4.5 8.50063 9.5 9 11C9.49936 12.5 9 0 9 0Z"
-          fill="#F2F2F7"
+          fill="currentColor"
         />
         <rect
           width="6"
           height="12"
           transform="matrix(-1 0 0 1 15 0)"
-          fill="#F2F2F7"
+          fill="currentColor"
         />
       </svg>
     </div>

@@ -5,7 +5,7 @@ import ChatHeader from './components/header/ChatHeader';
 import dynamic from 'next/dynamic';
 
 const InputSkeleton = () => {
-  return <div className="h-12 shrink-0 animate-spin" />;
+  return <div className="h-12 shrink-0 bg-bg-chat" />;
 };
 
 const DynamicInputComponent = dynamic(

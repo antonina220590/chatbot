@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
+import { ThemeProvider } from './utils/themeProvider';
+import { AntdRegistry } from './utils/AntdRegistry';
 
 export const metadata: Metadata = {
   title: 'Chatbot App',
@@ -34,14 +36,38 @@ const jost = localFont({
   ],
 });
 
+const setInitialTheme = `
+(function() {
+  try {
+    const item = localStorage.getItem('chat-theme');
+    if (item) {
+      const theme = JSON.parse(item).state.theme;
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  } catch (e) {}
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={jost.className}>
-      <body>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: setInitialTheme }} />
+      </head>
+
+      <body className={jost.className}>
+        <AntdRegistry>
+          <ThemeProvider>{children}</ThemeProvider>
+        </AntdRegistry>
+      </body>
     </html>
   );
 }

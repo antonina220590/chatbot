@@ -76,8 +76,9 @@ export default function MessageInputCore({
         trigger="hover"
         placement="topLeft"
         arrow={false}
+        color="bg-bg-primary"
       >
-        <button className="cursor-pointer hover:text-bg-user pb-1">
+        <button className="cursor-pointer hover:text-bg-user pb-1 text-text-dark">
           <SmileIcon className="h-4 w-4" />
         </button>
       </Popover>
@@ -85,7 +86,7 @@ export default function MessageInputCore({
         <Input.TextArea
           ref={ref}
           placeholder="Start typing..."
-          className="w-full align-top"
+          className="w-full align-topt"
           variant="borderless"
           onFocus={handleFocus}
           onBlur={handleBlur}
@@ -101,7 +102,7 @@ export default function MessageInputCore({
       {showAttachButton && (
         <button
           onClick={onAttachClick}
-          className="cursor-pointer hover:text-bg-user pb-1"
+          className="cursor-pointer hover:text-bg-user pb-1 text-text-dark"
         >
           <AtIcon className="h-4 w-4" />
         </button>

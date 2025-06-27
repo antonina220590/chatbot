@@ -16,7 +16,7 @@ export default function EditingMessage({
     <div className="flex py-2 justify-between">
       <div className="flex flex-col border-l-2 border-bg-user pl-3">
         <p className="font-body font-medium text-bg-user">Edit message</p>
-        <span className="font-jost">{displayText}</span>
+        <span className="font-jost text-text-dark">{displayText}</span>
       </div>
       <button
         className="flex justify-end text-bg-user cursor-pointer hover:text-red-500"
