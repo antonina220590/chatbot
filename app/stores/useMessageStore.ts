@@ -24,6 +24,7 @@ interface MessageStore {
   editingMessageId: string | null;
   addMessage: (data: MessageData) => void;
   deleteMessage: (id: string) => void;
+  clearChat: () => void;
   startEditMessage: (id: string) => void;
   editMessage: (id: string, text: string) => void;
   submitEditMessage: (text: string) => void;
@@ -79,6 +80,18 @@ const useMessageStore = create<MessageStore>()(
         set((state) => ({
           messages: state.messages.filter((message) => message.id !== id),
         }));
+      },
+
+      clearChat() {
+        set({
+          messages: [],
+          editingMessageId: null,
+          isBotTyping: false,
+        });
+        if (botReplyTimeoutId) {
+          clearTimeout(botReplyTimeoutId);
+          botReplyTimeoutId = null;
+        }
       },
 
       startEditMessage: (id: string) => {
