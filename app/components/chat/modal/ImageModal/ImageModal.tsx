@@ -95,7 +95,7 @@ export default function ImageModal() {
           <div className="flex justify-end">
             <button
               onClick={handleClose}
-              className=" text-bg-user cursor-pointer hover:text-red-500 pt-3 pr-3"
+              className="text-bg-user-msg cursor-pointer hover:text-text-exit pt-3 pr-3"
             >
               <CloseCircleOutlined style={{ fontSize: '20px' }} />
             </button>
@@ -115,7 +115,7 @@ export default function ImageModal() {
               }}
             />
           </div>
-          <div className="border-t-1 border-gray-300 w-full p-3">
+          <div className="border-t-1 border-gray-300 dark:border-t-[0.1px] dark:border-gray-500 w-full p-3">
             <MessageInputCore
               value={caption}
               onChange={setCaption}

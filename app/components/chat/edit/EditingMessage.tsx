@@ -19,7 +19,7 @@ export default function EditingMessage({
         <span className="font-jost text-text-dark">{displayText}</span>
       </div>
       <button
-        className="flex justify-end items-start text-text-accent cursor-pointer hover:text-red-500"
+        className="flex justify-end items-start text-text-accent cursor-pointer hover:text-text-exit"
         onClick={onCancel}
       >
         <CloseCircleOutlined style={{ fontSize: '17px' }} />

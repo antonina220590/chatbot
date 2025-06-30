@@ -1,6 +1,6 @@
 export default function BotBubble() {
   return (
-    <div className="absolute left-[-8px] top-0 h-[15px] w-[9px] text-bg-primary">
+    <div className="absolute left-[-8px] top-0 h-[15px] w-[9px] text-bg-bot-msg">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="18"

@@ -14,7 +14,10 @@
     --color-bg-bot-msg: #2a283e;
 
     --color-text-primary: #f2f2f7eb;
-    --color-text-light: #f2f2f7ee;
+    --color-text-light: #c9c9cbee;
+    --color-text-dark: #8e8e93;
+    --color-text-grayDark: #a5a5a6;
+    --color-text-exit: #7f1d1d;
   }
 }
 
@@ -34,6 +37,7 @@
   --color-text-grayLight: #8e8e93;
   --color-text-light: #ffffff;
   --color-text-accent: #007aff;
+  --color-text-exit: #ef4444;
 
   --breakpoint-xs: 20rem;
 }
