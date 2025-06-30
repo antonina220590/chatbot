@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import { ThemeProvider } from './utils/themeProvider';
 import { AntdRegistry } from './utils/AntdRegistry';
+import { App } from 'antd';
 
 export const metadata: Metadata = {
   title: 'Chatbot App',
@@ -65,7 +66,9 @@ export default function RootLayout({
 
       <body className={jost.className}>
         <AntdRegistry>
-          <ThemeProvider>{children}</ThemeProvider>
+          <App>
+            <ThemeProvider>{children}</ThemeProvider>
+          </App>
         </AntdRegistry>
       </body>
     </html>

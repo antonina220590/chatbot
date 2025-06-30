@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { processImageFile } from '@/app/utils/processImage';
 import ImageModal from '../modal/ImageModal/ImageModal';
 import { TextAreaRef } from 'antd/es/input/TextArea';
+import { notification } from 'antd';
 
 export default function InputComponent() {
   const inputValue = useInputStore((state) => state.inputValue);
@@ -23,6 +24,7 @@ export default function InputComponent() {
     (state) => state.isAttachmentModalOpen
   );
 
+  const [api, contextHolder] = notification.useNotification();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const inputRef = useRef<TextAreaRef>(null);
 
@@ -120,12 +122,22 @@ export default function InputComponent() {
       setInputValue('');
       openAttachmentModal(textToMove);
     } catch (error) {
-      throw new Error(String(error));
+      if (error instanceof Error) {
+        api.error({
+          message: 'File processing error',
+          description: error.message,
+          placement: 'topRight',
+        });
+      }
+    }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
   return (
     <div className=" px-5.5 py-3 bg-bg-chat">
+      {contextHolder}
       {editingMessageId && (
         <EditingMessage
           messageText={currentMessageToEdit}
