@@ -42,11 +42,11 @@ export default function ImageModal() {
     }
   };
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     closeAttachmentModal();
     setCaption('');
     clearInputState();
-  };
+  }, [clearInputState, closeAttachmentModal]);
 
   useEffect(() => {
     if (isAttachmentModalOpen && captionForModal !== null) {
@@ -73,7 +73,7 @@ export default function ImageModal() {
     return () => {
       document.removeEventListener('keydown', handleGlobalModalKeyDown);
     };
-  }, [isAttachmentModalOpen, handleSendWithImage]);
+  }, [isAttachmentModalOpen, handleSendWithImage, handleClose]);
 
   if (!previewImage) {
     return null;
@@ -86,6 +86,8 @@ export default function ImageModal() {
         centered
         open={isAttachmentModalOpen}
         closeIcon={null}
+        onCancel={handleClose}
+        maskClosable={false}
         footer={null}
         styles={{
           content: { padding: 0 },

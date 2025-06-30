@@ -66,12 +66,12 @@ export default function InputComponent() {
     submitEditMessage,
   ]);
 
-  const handleCancelEdit = () => {
+  const handleCancelEdit = useCallback(() => {
     if (editingMessageId) {
       cancelEditMessage();
       setInputValue('');
     }
-  };
+  }, [editingMessageId, cancelEditMessage, setInputValue]);
 
   useEffect(() => {
     const handleGlobalKeyDown = (event: KeyboardEvent) => {
@@ -88,13 +88,24 @@ export default function InputComponent() {
         event.preventDefault();
         handleSendMessage();
       }
+      if (event.key === 'Escape') {
+        if (editingMessageId) {
+          handleCancelEdit();
+        }
+        return;
+      }
     };
 
     document.addEventListener('keydown', handleGlobalKeyDown);
     return () => {
       document.removeEventListener('keydown', handleGlobalKeyDown);
     };
-  }, [handleSendMessage, isAttachmentModalOpen]);
+  }, [
+    editingMessageId,
+    handleCancelEdit,
+    handleSendMessage,
+    isAttachmentModalOpen,
+  ]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' && !event.shiftKey) {

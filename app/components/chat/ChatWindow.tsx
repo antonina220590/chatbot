@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import DateComponent from '../date/DateComponent';
+import DateComponent from './date/DateComponent';
 import BotMessage from './messages/bot/BotMessage';
 import UserMessage from './messages/user/UserMessage';
 import useMessageStore from '@/app/stores/useMessageStore';
