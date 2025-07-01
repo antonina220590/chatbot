@@ -38,6 +38,7 @@
   --color-text-light: #ffffff;
   --color-text-accent: #007aff;
   --color-text-exit: #ef4444;
+  --color-text-success: #4caf50;
 
   --breakpoint-xs: 20rem;
 }

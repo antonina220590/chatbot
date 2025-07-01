@@ -33,7 +33,7 @@ export default function BotMessage({ message }: BotMessageProps) {
               height={32}
               quality={100}
             />
-            <div className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-green-500 border-[1.25px] border-white"></div>
+            <div className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-text-success border-[1.25px] border-white"></div>
           </div>
         </div>
         <div className="relative flex flex-col bg-bg-bot-msg rounded-lg px-2 py-1 gap-1 xs:min-w-40">
