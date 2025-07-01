@@ -10,7 +10,7 @@ const InputSkeleton = () => {
 };
 
 const DynamicInputComponent = dynamic(
-  () => import('./components/chat/input/InputComponent'),
+  () => import('./components/chat/input/InputComponent/InputComponent'),
   {
     ssr: false,
     loading: () => <InputSkeleton />,

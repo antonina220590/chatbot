@@ -1,10 +1,10 @@
 import useMessageStore from '@/app/stores/useMessageStore';
-import MessageInputCore from './MessageInputCore';
+import MessageInputCore from '../MessageInputCore/MessageInputCore';
 import useInputStore from '@/app/stores/useInputStore';
-import EditingMessage from '../edit/EditingMessage';
+import EditingMessage from '../../edit/EditingMessage';
 import { useCallback, useEffect, useRef } from 'react';
 import { processImageFile } from '@/app/utils/processImage';
-import ImageAttachModal from '../modal/ImageAttachModal/ImageAttachModal';
+import ImageAttachModal from '../../modal/ImageAttachModal/ImageAttachModal';
 import { TextAreaRef } from 'antd/es/input/TextArea';
 import { notification } from 'antd';
 

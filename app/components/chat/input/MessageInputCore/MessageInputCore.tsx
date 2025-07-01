@@ -4,7 +4,7 @@ import SmileIcon from '@/app/components/icons/SmileIcon';
 import SendIcon from '@/app/components/icons/SendIcon';
 import { useEffect, useState } from 'react';
 import { CheckCircleOutlined } from '@ant-design/icons';
-import EmojiContent from '../modal/EmojiModal/EmojiModal';
+import EmojiContent from '../../modal/EmojiModal/EmojiModal';
 import type { TextAreaRef } from 'antd/es/input/TextArea';
 
 interface MessageInputCoreProps {
@@ -16,7 +16,6 @@ interface MessageInputCoreProps {
   onKeyDown?: (event: React.KeyboardEvent) => void;
   editMode?: boolean;
   onAttachClick?: () => void;
-
   forceSendActive?: boolean;
 }
 
@@ -101,6 +100,8 @@ export default function MessageInputCore({
       </div>
       {showAttachButton && (
         <button
+          type="button"
+          aria-label="Attach image"
           onClick={onAttachClick}
           className="cursor-pointer hover:text-text-accent pb-1 text-text-dark"
         >
@@ -109,7 +110,9 @@ export default function MessageInputCore({
       )}
 
       <button
+        type="button"
         onClick={onSend}
+        aria-label="Send message"
         className={`cursor-pointer ${isButtonActive ? 'text-text-accent' : 'text-text-grayLight'} flex pb-1`}
       >
         {editMode ? (

@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
-import MessageInputCore from '../../input/MessageInputCore';
+import MessageInputCore from '../../input/MessageInputCore/MessageInputCore';
 import useInputStore from '@/app/stores/useInputStore';
 import useMessageStore from '@/app/stores/useMessageStore';
 import { useCallback, useEffect, useRef, useState } from 'react';
