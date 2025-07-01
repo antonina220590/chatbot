@@ -99,7 +99,7 @@ export default function UserMessage({
             type="button"
             onClick={handleEditClick}
             className="
-            text-gray-400 text-xs transition-colors
+            text-text-icons text-xs transition-colors
             hover:text-text-accent
             [&_.anticon_svg]:fill-current
             cursor-pointer
@@ -110,7 +110,7 @@ export default function UserMessage({
           <button
             type="button"
             onClick={handleDelete}
-            className="text-gray-400 text-xs transition-colors
+            className="text-text-icons text-xs transition-colors
             hover:text-text-exit
             [&_.anticon_svg]:fill-current
             cursor-pointer"

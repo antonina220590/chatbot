@@ -32,6 +32,10 @@ vi.mock('@/app/stores/useImageViewerStore', () => ({
   default: vi.fn().mockReturnValue(mockOpenImageViewer),
 }));
 
+vi.mock('@/app/components/icons/UserBubble', () => ({
+  default: () => <div data-testid="user-bubble" />,
+}));
+
 describe('UserMessage Component', () => {
   const mockMessage: Message = {
     id: 'user-msg-1',
@@ -95,5 +99,15 @@ describe('UserMessage Component', () => {
       width: 800,
       height: 600,
     });
+  });
+
+  it('should render UserBubble when message is not consecutive', () => {
+    render(<UserMessage message={mockMessage} isConsecutive={false} />);
+    expect(screen.getByTestId('user-bubble')).toBeInTheDocument();
+  });
+
+  it('should NOT render UserBubble when message is consecutive', () => {
+    render(<UserMessage message={mockMessage} isConsecutive={true} />);
+    expect(screen.queryByTestId('user-bubble')).not.toBeInTheDocument();
   });
 });
