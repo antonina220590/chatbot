@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import Image from 'next/image';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import useMessageStore, { Message } from '@/app/stores/useMessageStore';
+import useImageViewerStore from '@/app/stores/useImageViewerStore';
 import { motion } from 'framer-motion';
 
 interface UserMessageProps {
@@ -16,6 +17,7 @@ export default function UserMessage({
 }: UserMessageProps) {
   const deleteMessage = useMessageStore((state) => state.deleteMessage);
   const startEditMessage = useMessageStore((state) => state.startEditMessage);
+  const openImageViewer = useImageViewerStore((state) => state.openImageViewer);
 
   const handleDelete = () => {
     if (deleteMessage) {
@@ -33,6 +35,16 @@ export default function UserMessage({
     initial: { opacity: 0, y: 20, scale: 0.95 },
     animate: { opacity: 1, y: 0, scale: 1 },
     exit: { opacity: 0, x: 50, transition: { duration: 0.2 } },
+  };
+
+  const handleImageClick = () => {
+    if (message.imageUrl && message.width && message.height) {
+      openImageViewer({
+        url: message.imageUrl,
+        width: message.width,
+        height: message.height,
+      });
+    }
   };
 
   return (
@@ -56,6 +68,7 @@ export default function UserMessage({
                     alt={message.text || 'User uploaded image'}
                     width={message.width}
                     height={message.height}
+                    onClick={handleImageClick}
                     className="max-h-[60vh] inline-block overflow-hidden border-0 rounded-md"
                     style={{
                       objectFit: 'contain',
@@ -98,7 +111,7 @@ export default function UserMessage({
             type="button"
             onClick={handleDelete}
             className="text-gray-400 text-xs transition-colors
-            hover:text-red-500
+            hover:text-text-exit
             [&_.anticon_svg]:fill-current
             cursor-pointer"
           >

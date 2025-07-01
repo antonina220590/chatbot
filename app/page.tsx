@@ -1,6 +1,7 @@
 'use client';
 
 import ChatWindow from './components/chat/ChatWindow';
+import ImageModal from './components/chat/modal/ImageModal/ImageModal';
 import ChatHeader from './components/header/ChatHeader';
 import dynamic from 'next/dynamic';
 
@@ -23,6 +24,7 @@ export default function Home() {
         <ChatHeader />
         <ChatWindow />
         <DynamicInputComponent />
+        <ImageModal />
       </div>
     </div>
   );

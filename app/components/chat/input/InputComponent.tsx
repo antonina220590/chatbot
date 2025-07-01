@@ -4,7 +4,7 @@ import useInputStore from '@/app/stores/useInputStore';
 import EditingMessage from '../edit/EditingMessage';
 import { useCallback, useEffect, useRef } from 'react';
 import { processImageFile } from '@/app/utils/processImage';
-import ImageModal from '../modal/ImageModal/ImageModal';
+import ImageAttachModal from '../modal/ImageAttachModal/ImageAttachModal';
 import { TextAreaRef } from 'antd/es/input/TextArea';
 import { notification } from 'antd';
 
@@ -171,7 +171,7 @@ export default function InputComponent() {
         accept="image/webp,image/png,image/jpeg,image/jpg"
         onChange={handleFileChange}
       />
-      <ImageModal />
+      <ImageAttachModal />
     </div>
   );
 }

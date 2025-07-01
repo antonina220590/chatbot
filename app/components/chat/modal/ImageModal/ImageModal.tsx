@@ -1,135 +1,106 @@
-'use client';
 import Image from 'next/image';
-import { CloseCircleOutlined } from '@ant-design/icons';
-import { Modal } from 'antd';
-import MessageInputCore from '../../input/MessageInputCore';
-import useInputStore from '@/app/stores/useInputStore';
-import useMessageStore from '@/app/stores/useMessageStore';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { TextAreaRef } from 'antd/es/input/TextArea';
+import { Modal, notification } from 'antd';
+import useImageViewerStore from '@/app/stores/useImageViewerStore';
+import { DownloadOutlined, DownOutlined } from '@ant-design/icons';
+import { downloadImage } from '@/app/utils/downloadImage';
+import dayjs from 'dayjs';
+import { useState } from 'react';
 export default function ImageModal() {
-  const closeAttachmentModal = useInputStore(
-    (state) => state.closeAttachmentModal
+  const isImageViewerOpen = useImageViewerStore(
+    (state) => state.isImageViewerOpen
   );
-  const clearInputState = useInputStore((state) => state.clearInputState);
-  const previewImage = useInputStore((state) => state.previewImage);
-  const addMessage = useMessageStore((state) => state.addMessage);
-  const isAttachmentModalOpen = useInputStore(
-    (state) => state.isAttachmentModalOpen
+  const viewingImage = useImageViewerStore((state) => state.viewingImage);
+  const closeImageViewer = useImageViewerStore(
+    (state) => state.closeImageViewer
   );
-  const captionForModal = useInputStore((state) => state.captionForModal);
-  const modalInputRef = useRef<TextAreaRef>(null);
 
-  const [caption, setCaption] = useState('');
-  const isButtonActive = previewImage !== null;
+  const [api, contextHolder] = notification.useNotification();
+  const [isDownloaded, setIsDownloaded] = useState(false);
 
-  const handleSendWithImage = useCallback(() => {
-    if (!previewImage) return;
-    addMessage({
-      text: caption.trim(),
-      imageUrl: previewImage.url,
-      width: previewImage.width,
-      height: previewImage.height,
-    });
-    setCaption('');
-    clearInputState();
-  }, [addMessage, caption, clearInputState, previewImage]);
+  const handleDownload = async () => {
+    if (!viewingImage || isDownloaded) return;
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      handleSendWithImage();
+    try {
+      const timestamp = dayjs().format('YYYY-MM-DD_HH-mm-ss');
+      const dynamicFilename = `image_${timestamp}.jpg`;
+      await downloadImage(viewingImage.url, dynamicFilename);
+      setIsDownloaded(true);
+      setTimeout(() => {
+        setIsDownloaded(false);
+      }, 2000);
+    } catch (error) {
+      if (error instanceof Error) {
+        api.error({
+          message: 'Downloading error',
+          description: error.message,
+          placement: 'topRight',
+        });
+      }
     }
   };
 
-  const handleClose = useCallback(() => {
-    closeAttachmentModal();
-    setCaption('');
-    clearInputState();
-  }, [clearInputState, closeAttachmentModal]);
-
-  useEffect(() => {
-    if (isAttachmentModalOpen && captionForModal !== null) {
-      setCaption(captionForModal);
-    }
-  }, [isAttachmentModalOpen, captionForModal]);
-
-  useEffect(() => {
-    const handleGlobalModalKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Enter' && !event.shiftKey) {
-        if (
-          document.activeElement ===
-          modalInputRef.current?.resizableTextArea?.textArea
-        ) {
-          return;
-        }
-        event.preventDefault();
-        handleSendWithImage();
-      }
-    };
-    if (isAttachmentModalOpen) {
-      document.addEventListener('keydown', handleGlobalModalKeyDown);
-    }
-    return () => {
-      document.removeEventListener('keydown', handleGlobalModalKeyDown);
-    };
-  }, [isAttachmentModalOpen, handleSendWithImage, handleClose]);
-
-  if (!previewImage) {
+  if (!viewingImage) {
     return null;
   }
 
   return (
-    <div className="flex">
-      <Modal
-        width={400}
-        centered
-        open={isAttachmentModalOpen}
-        closeIcon={null}
-        onCancel={handleClose}
-        maskClosable={false}
-        footer={null}
-        styles={{
-          content: { padding: 0 },
-        }}
-      >
-        <div className="flex flex-col gap-3">
-          <div className="flex justify-end">
-            <button
-              onClick={handleClose}
-              className="text-bg-user-msg cursor-pointer hover:text-text-exit pt-3 pr-3"
+    <>
+      {contextHolder}
+      <div className="flex">
+        <Modal
+          open={isImageViewerOpen}
+          footer={null}
+          centered
+          closable={false}
+          onCancel={closeImageViewer}
+          styles={{
+            mask: {
+              backgroundColor: 'rgba(0, 0, 0, 0.75)',
+            },
+            content: {
+              backgroundColor: 'transparent',
+              boxShadow: 'none',
+              padding: 0,
+            },
+          }}
+        >
+          <div className="h-svh flex flex-col gap-2">
+            <div
+              className="flex-grow flex justify-center items-center overflow-hidden"
+              onClick={closeImageViewer}
             >
-              <CloseCircleOutlined style={{ fontSize: '20px' }} />
-            </button>
+              <Image
+                src={viewingImage?.url || ''}
+                onClick={(e) => e.stopPropagation()}
+                alt="image"
+                width={viewingImage?.width}
+                height={viewingImage?.height}
+                quality={100}
+                style={{
+                  maxHeight: '98%',
+                  maxWidth: '98%',
+                  width: 'auto',
+                  height: 'auto',
+                  objectFit: 'contain',
+                }}
+              />
+            </div>
+            <div className="flex-shrink-0 flex justify-center items-center p-3 bg-neutral-800 opacity-70 w-full rounded-lg">
+              <button
+                onClick={handleDownload}
+                className={`text-white text-2xl p-2 rounded-full transition-all ${
+                  isDownloaded
+                    ? 'bg-green-500 cursor-default'
+                    : 'hover:bg-white hover:bg-opacity-20'
+                }`}
+                disabled={isDownloaded}
+              >
+                {isDownloaded ? <DownOutlined /> : <DownloadOutlined />}
+              </button>
+            </div>
           </div>
-          <div className="flex justify-center p-3">
-            <Image
-              src={previewImage?.url || ''}
-              alt="image"
-              width={previewImage?.width}
-              height={previewImage?.height}
-              className="max-h-[60vh] inline-block overflow-hidden border-0 rounded-t-lg"
-              quality={100}
-              style={{
-                objectFit: 'contain',
-                width: '100%',
-                height: '100%',
-              }}
-            />
-          </div>
-          <div className="border-t-1 border-gray-300 dark:border-t-[0.1px] dark:border-gray-500 w-full p-3">
-            <MessageInputCore
-              value={caption}
-              onChange={setCaption}
-              onSend={handleSendWithImage}
-              forceSendActive={isButtonActive}
-              onKeyDown={handleKeyDown}
-              showAttachButton={false}
-              ref={modalInputRef}
-            />
-          </div>
-        </div>
-      </Modal>
-    </div>
+        </Modal>
+      </div>
+    </>
   );
 }
