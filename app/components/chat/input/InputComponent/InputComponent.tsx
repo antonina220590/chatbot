@@ -73,26 +73,24 @@ export default function InputComponent() {
     }
   }, [editingMessageId, cancelEditMessage, setInputValue]);
 
+  const handleSendMessageRef = useRef(handleSendMessage);
+  const handleCancelEditRef = useRef(handleCancelEdit);
+
+  useEffect(() => {
+    handleSendMessageRef.current = handleSendMessage;
+    handleCancelEditRef.current = handleCancelEdit;
+  });
+
   useEffect(() => {
     const handleGlobalKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Enter' && !event.shiftKey) {
-        if (isAttachmentModalOpen) {
-          return;
-        }
-        if (
-          document.activeElement ===
-          inputRef.current?.resizableTextArea?.textArea
-        ) {
-          return;
-        }
-        event.preventDefault();
-        handleSendMessage();
+        if (isAttachmentModalOpen) return;
+        handleSendMessageRef.current();
       }
       if (event.key === 'Escape') {
         if (editingMessageId) {
-          handleCancelEdit();
+          handleCancelEditRef.current();
         }
-        return;
       }
     };
 
@@ -100,12 +98,7 @@ export default function InputComponent() {
     return () => {
       document.removeEventListener('keydown', handleGlobalKeyDown);
     };
-  }, [
-    editingMessageId,
-    handleCancelEdit,
-    handleSendMessage,
-    isAttachmentModalOpen,
-  ]);
+  }, [isAttachmentModalOpen, editingMessageId]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' && !event.shiftKey) {
@@ -165,6 +158,7 @@ export default function InputComponent() {
         ref={inputRef}
       />
       <input
+        data-testid="input-file"
         type="file"
         ref={fileInputRef}
         style={{ display: 'none' }}

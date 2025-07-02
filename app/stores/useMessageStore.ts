@@ -69,8 +69,9 @@ const useMessageStore = create<MessageStore>()(
             };
             set((state) => ({
               messages: [...state.messages, botMessage],
+              isBotTyping: false,
             }));
-            set({ isBotTyping: false });
+
             botReplyTimeoutId = null;
           }, 3500);
         }
@@ -83,15 +84,15 @@ const useMessageStore = create<MessageStore>()(
       },
 
       clearChat() {
+        if (botReplyTimeoutId) {
+          clearTimeout(botReplyTimeoutId);
+          botReplyTimeoutId = null;
+        }
         set({
           messages: [],
           editingMessageId: null,
           isBotTyping: false,
         });
-        if (botReplyTimeoutId) {
-          clearTimeout(botReplyTimeoutId);
-          botReplyTimeoutId = null;
-        }
       },
 
       startEditMessage: (id: string) => {

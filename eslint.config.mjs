@@ -43,7 +43,7 @@ const eslintConfig = [
     },
   },
   {
-    ignores: ['dist', 'node_modules', '{.,}next/'],
+    ignores: ['dist', 'node_modules', '{.,}next/', 'coverage'],
   },
   eslintConfigPrettier,
 ];
