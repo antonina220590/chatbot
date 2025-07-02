@@ -83,6 +83,7 @@ export default function MessageInputCore({
       </Popover>
       <div className="flex-1 max-h-[40vh] overflow-hidden">
         <Input.TextArea
+          data-testid="message-input"
           ref={ref}
           placeholder="Start typing..."
           className="w-full align-topt"

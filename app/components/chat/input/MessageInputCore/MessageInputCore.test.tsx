@@ -15,7 +15,6 @@ vi.mock('antd', async (importOriginal) => {
 describe('MessageInputCore Component', () => {
   const mockOnChange = vi.fn();
   const mockOnSend = vi.fn();
-  // const mockOnKeyDown = vi.fn();
   const mockOnAttachClick = vi.fn();
 
   beforeEach(() => {
