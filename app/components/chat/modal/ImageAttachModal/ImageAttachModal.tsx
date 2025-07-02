@@ -7,6 +7,7 @@ import useInputStore from '@/app/stores/useInputStore';
 import useMessageStore from '@/app/stores/useMessageStore';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { TextAreaRef } from 'antd/es/input/TextArea';
+import { notification } from 'antd';
 export default function ImageAttachModal() {
   const closeAttachmentModal = useInputStore(
     (state) => state.closeAttachmentModal
@@ -21,19 +22,33 @@ export default function ImageAttachModal() {
   const modalInputRef = useRef<TextAreaRef>(null);
 
   const [caption, setCaption] = useState('');
+  const [api, contextHolder] = notification.useNotification();
+
   const isButtonActive = previewImage !== null;
 
   const handleSendWithImage = useCallback(() => {
     if (!previewImage) return;
-    addMessage({
-      text: caption.trim(),
-      imageUrl: previewImage.url,
-      width: previewImage.width,
-      height: previewImage.height,
-    });
-    setCaption('');
-    clearInputState();
-  }, [addMessage, caption, clearInputState, previewImage]);
+
+    try {
+      addMessage({
+        text: caption.trim(),
+        imageUrl: previewImage.url,
+        width: previewImage.width,
+        height: previewImage.height,
+      });
+      setCaption('');
+      clearInputState();
+    } catch (error) {
+      if (error instanceof Error) {
+        api.error({
+          message: 'Failed to send message',
+          description:
+            'Browser storage is full. Please try clearing the chat or uploading a smaller image.',
+          placement: 'topRight',
+        });
+      }
+    }
+  }, [addMessage, api, caption, clearInputState, previewImage]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' && !event.shiftKey) {
@@ -81,6 +96,7 @@ export default function ImageAttachModal() {
 
   return (
     <div className="flex">
+      {contextHolder}
       <Modal
         width={400}
         centered
