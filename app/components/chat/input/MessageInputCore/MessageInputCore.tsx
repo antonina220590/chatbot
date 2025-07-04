@@ -86,7 +86,7 @@ export default function MessageInputCore({
           data-testid="message-input"
           ref={ref}
           placeholder="Start typing..."
-          className="w-full align-topt"
+          className="w-full align-top"
           variant="borderless"
           onFocus={handleFocus}
           onBlur={handleBlur}
@@ -95,7 +95,7 @@ export default function MessageInputCore({
           value={value}
           autoSize={{ minRows: 1, maxRows: 8 }}
           styles={{
-            textarea: { padding: '0px', resize: 'none' },
+            textarea: { padding: '0px', resize: 'none', fontSize: '16px' },
           }}
         />
       </div>
