@@ -13,8 +13,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  // maximumScale: 1,
-  // userScalable: false,
 };
 
 const jost = localFont({
@@ -49,7 +47,9 @@ const setInitialTheme = `
     } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       document.documentElement.classList.add('dark');
     }
-  } catch (e) {}
+  } catch (e) {
+     console.log(e)
+   }
 })();
 `;
 
