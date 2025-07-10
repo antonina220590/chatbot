@@ -64,7 +64,15 @@ Edit Mode
 - **UI Components:** Ant Design
 - **Styling:** Tailwind CSS
 - **Animations:** Framer Motion
-- **Testing:** Vitest, React Testing Library, User Event
+
+### Tooling & Code Quality
+
+- **Linter:** ESLint
+- **Formatter:** Prettier
+- **Git Hooks:** Husky
+- **Pre-commit checks:** lint-staged
+  **Pre-push Checks:** Running the full test suite with `npm run test`
+- **Testing:** Vitest, React Testing Library
 
 ---
 
@@ -83,13 +91,17 @@ Edit Mode
 ## ⚙️ Getting Started
 
 1.  **Clone the repository:**
+
     ```bash
-    git clone [https://github.com/antonina220590/chatbot.git](https://github.com/antonina220590/chatbot.git)
+    git clone https://github.com/antonina220590/chatbot.git
     ```
+
 2.  **Install dependencies:**
+
     ```bash
     npm install
     ```
+
 3.  **Run the development server:**
     ```bash
     npm run dev
