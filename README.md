@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# React Chat App (Test Assignment)
 
-## Getting Started
+A frontend chat application with chatbot elements, built to showcase skills in a modern tech stack. The UI is designed to be a pixel-perfect replica of the provided [Figma design](https://www.figma.com/design/vVRiigEkDdsizG0r4dg3JI/Chat-UI-kit--Community---Copy-?node-id=2-2&p=f&t=vofE21EJjG3Ybbq1-0). Idea was taken from [Test assignment](https://joytechnology.notion.site/Frontend-0868814b407f4df690942907143362d8)
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Live Demo
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**[View Live Demo ➔](https://chatbot-one-murex.vercel.app/)**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📸 Screenshots
 
-## Learn More
+|                 Light Theme                 |                Dark Theme                 |
+| :-----------------------------------------: | :---------------------------------------: |
+| ![Light Theme](/screenshots/light_mode.jpg) | ![Dark Theme](/screenshots/dark_mode.jpg) |
 
-To learn more about Next.js, take a look at the following resources:
+|                 Image Attachment                  |              Image Save mode               |
+| :-----------------------------------------------: | :----------------------------------------: |
+| ![Image Attachment](/screenshots/image_attch.jpg) | ![Image Save](/screenshots/image_save.jpg) |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Edit Mode
+![Edit Mode](/screenshots/edit_mode.jpg)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🚀 Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Full Message CRUD:**
+  - [x] Sending messages via Enter key or button click
+  - [x] Editing user's own messages
+  - [x] Deleting user's own messages
+  - [x] Deleting all messages in chat
+- **Interactivity:**
+  - [x] Bot reply with a simulated delay
+  - [x] Animated "Janet is typing..." indicator
+  - [x] Smooth enter/exit animations for messages using **Framer Motion**
+  - [x] Auto-scrolling to the latest message
+- **Media Handling:**
+  - [x] Attaching images (PNG, JPG, WEBP) with type and size validation
+  - [x] Image preview in a modal with the ability to add a caption
+  - [x] Viewing sent images in a full-screen with a download option
+- **User Interface:**
+  - [x] Responsive design that displays correctly on all devices
+  - [x] Dynamic theme switching (light/dark) with persistence
+  - [x] Solved Flash of Incorrect Theme (FOIT) on page load
+  - [x] Solved Cumulative Layout Shift (CLS) on input render
+  - [x] Custom animated icons matching the Figma design
+- **State and Data:**
+  - [x] Persisting message history and theme choice in `localStorage`
+  - [x] Centralized state management with **Zustand**
+- **Testing:**
+  - [x] Unit tests for Zustand store logic
+  - [x] Integration tests for key user flows (sending messages, bot replies)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🛠️ Tech Stack
+
+- **Framework:** React 19, Next.js 15+ (App Router)
+- **Language:** TypeScript
+- **State Management:** Zustand
+- **UI Components:** Ant Design
+- **Styling:** Tailwind CSS
+- **Animations:** Framer Motion
+- **Testing:** Vitest, React Testing Library, User Event
+
+---
+
+## 💡 Architectural Decisions
+
+- **Solving Flash of Incorrect Theme (FOUC/FOIT):** To prevent a flash of the wrong theme on initial load, a blocking inline script is used in the `<head>` to apply the correct theme class (`.dark`) before React hydration, based on `localStorage` or OS preference.
+
+- **Solving Layout Shift (CLS):** The dynamic-height text input component is loaded using `next/dynamic` with `{ ssr: false }`. This ensures the component only renders on the client-side, immediately calculating its final size and completely eliminating any layout shift.
+
+- **Smart vs. Dumb Component Separation:** The input logic was split into a "smart" container component (`InputComponent`), which handles state and actions, and a "dumb," reusable "core" component (`MessageInputCore`), which is only responsible for the UI and receives all data and handlers via props. This allowed the core to be reused in two different contexts: the main input and the image attachment modal.
+
+- **Justified Icon Choice:** To achieve 100% consistency with the Figma design, custom SVG icons were exported from the design file instead of using the Ant Design Icons library, which lacked an exact match for all required icons.
+
+---
+
+## ⚙️ Getting Started
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/antonina220590/chatbot.git](https://github.com/antonina220590/chatbot.git)
+    ```
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **Run the development server:**
+    ```bash
+    npm run dev
+    ```
+4.  Open [http://localhost:3000](http://localhost:3000) in your browser.
