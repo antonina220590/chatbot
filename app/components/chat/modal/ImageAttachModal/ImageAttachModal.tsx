@@ -1,0 +1,151 @@
+'use client';
+import Image from 'next/image';
+import { CloseCircleOutlined } from '@ant-design/icons';
+import { Modal } from 'antd';
+import MessageInputCore from '../../input/MessageInputCore/MessageInputCore';
+import useInputStore from '@/app/stores/useInputStore';
+import useMessageStore from '@/app/stores/useMessageStore';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { TextAreaRef } from 'antd/es/input/TextArea';
+import { notification } from 'antd';
+export default function ImageAttachModal() {
+  const closeAttachmentModal = useInputStore(
+    (state) => state.closeAttachmentModal
+  );
+  const clearInputState = useInputStore((state) => state.clearInputState);
+  const previewImage = useInputStore((state) => state.previewImage);
+  const addMessage = useMessageStore((state) => state.addMessage);
+  const isAttachmentModalOpen = useInputStore(
+    (state) => state.isAttachmentModalOpen
+  );
+  const captionForModal = useInputStore((state) => state.captionForModal);
+  const modalInputRef = useRef<TextAreaRef>(null);
+
+  const [caption, setCaption] = useState('');
+  const [api, contextHolder] = notification.useNotification();
+
+  const isButtonActive = previewImage !== null;
+
+  const handleSendWithImage = useCallback(() => {
+    if (!previewImage) return;
+
+    try {
+      addMessage({
+        text: caption.trim(),
+        imageUrl: previewImage.url,
+        width: previewImage.width,
+        height: previewImage.height,
+      });
+      setCaption('');
+      clearInputState();
+    } catch (error) {
+      if (error instanceof Error) {
+        api.error({
+          message: 'Failed to send message',
+          description:
+            'Browser storage is full. Please try clearing the chat or uploading a smaller image.',
+          placement: 'topRight',
+        });
+      }
+    }
+  }, [addMessage, api, caption, clearInputState, previewImage]);
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      handleSendWithImage();
+    }
+  };
+
+  const handleClose = useCallback(() => {
+    closeAttachmentModal();
+    setCaption('');
+    clearInputState();
+  }, [clearInputState, closeAttachmentModal]);
+
+  useEffect(() => {
+    if (isAttachmentModalOpen && captionForModal !== null) {
+      setCaption(captionForModal);
+    }
+  }, [isAttachmentModalOpen, captionForModal]);
+
+  useEffect(() => {
+    const handleGlobalModalKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        if (
+          document.activeElement ===
+          modalInputRef.current?.resizableTextArea?.textArea
+        ) {
+          return;
+        }
+        event.preventDefault();
+        handleSendWithImage();
+      }
+    };
+    if (isAttachmentModalOpen) {
+      document.addEventListener('keydown', handleGlobalModalKeyDown);
+    }
+    return () => {
+      document.removeEventListener('keydown', handleGlobalModalKeyDown);
+    };
+  }, [isAttachmentModalOpen, handleSendWithImage, handleClose]);
+
+  if (!previewImage) {
+    return null;
+  }
+
+  return (
+    <div className="flex">
+      {contextHolder}
+      <Modal
+        width={400}
+        centered
+        open={isAttachmentModalOpen}
+        closeIcon={null}
+        onCancel={handleClose}
+        maskClosable={false}
+        footer={null}
+        styles={{
+          content: { padding: 0 },
+        }}
+      >
+        <div className="flex flex-col gap-3">
+          <div className="flex justify-end">
+            <button
+              onClick={handleClose}
+              className="text-bg-user-msg cursor-pointer hover:text-text-exit pt-3 pr-3"
+            >
+              <CloseCircleOutlined style={{ fontSize: '20px' }} />
+            </button>
+          </div>
+          <div className="flex justify-center p-3">
+            <Image
+              src={previewImage?.url || ''}
+              alt="image"
+              width={previewImage?.width}
+              height={previewImage?.height}
+              className="max-h-[60vh] inline-block overflow-hidden border-0 rounded-t-lg"
+              quality={100}
+              style={{
+                objectFit: 'contain',
+                width: '100%',
+                height: '100%',
+              }}
+            />
+          </div>
+          <div className="border-t-1 border-gray-300 dark:border-t-[0.1px] dark:border-gray-500 w-full p-3">
+            <MessageInputCore
+              value={caption}
+              onChange={setCaption}
+              onSend={handleSendWithImage}
+              forceSendActive={isButtonActive}
+              onKeyDown={handleKeyDown}
+              showAttachButton={false}
+              ref={modalInputRef}
+            />
+          </div>
+        </div>
+      </Modal>
+    </div>
+  );
+}

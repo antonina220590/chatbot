@@ -1,0 +1,76 @@
+import type { Metadata, Viewport } from 'next';
+import localFont from 'next/font/local';
+import './globals.css';
+import { ThemeProvider } from './utils/themeProvider';
+import { AntdRegistry } from './utils/AntdRegistry';
+import { App } from 'antd';
+
+export const metadata: Metadata = {
+  title: 'Chatbot App',
+  description: 'Chatbot App designed for portfolio',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
+const jost = localFont({
+  src: [
+    {
+      path: '../public/fonts/Jost.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/Jost-SemiBold.woff2',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/Jost-Italic.woff2',
+      weight: '400',
+      style: 'italic',
+    },
+  ],
+});
+
+const setInitialTheme = `
+(function() {
+  try {
+    const item = localStorage.getItem('chat-theme');
+    if (item) {
+      const theme = JSON.parse(item).state.theme;
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  } catch (e) {
+     console.log(e)
+   }
+})();
+`;
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: setInitialTheme }} />
+      </head>
+
+      <body className={jost.className}>
+        <AntdRegistry>
+          <App>
+            <ThemeProvider>{children}</ThemeProvider>
+          </App>
+        </AntdRegistry>
+      </body>
+    </html>
+  );
+}
